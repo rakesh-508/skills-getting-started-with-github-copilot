@@ -38,6 +38,54 @@ activities = {
         "schedule": "Mondays, Wednesdays, Fridays, 2:00 PM - 3:00 PM",
         "max_participants": 30,
         "participants": ["john@mergington.edu", "olivia@mergington.edu"]
+    },
+    "Basketball Team": {
+        "description": "Join the basketball team and compete in local tournaments",
+        "schedule": "Tuesdays and Thursdays, 4:00 PM - 6:00 PM",
+        "max_participants": 15,
+        "participants": []
+    },
+    "Swimming Club": {
+        "description": "Practice swimming techniques and compete in swim meets",
+        "schedule": "Mondays and Wednesdays, 5:00 PM - 6:30 PM",
+        "max_participants": 10,
+        "participants": []
+    },
+    "Art Studio": {
+        "description": "Explore various art techniques and create your own masterpieces",
+        "schedule": "Wednesdays, 3:00 PM - 5:00 PM",
+        "max_participants": 15,
+        "participants": []
+    },
+    "Drama Club": {
+        "description": "Acting, directing, and stage production",
+        "schedule": "Thursdays, 3:30 PM - 5:30 PM",
+        "max_participants": 20,
+        "participants": []
+    },
+    "Debate Team": {
+        "description": "Develop public speaking and argumentation skills",
+        "schedule": "Fridays, 4:00 PM - 6:00 PM",
+        "max_participants": 12,
+        "participants": []
+    },
+    "Science Club": {
+        "description": "Explore scientific concepts and conduct experiments",
+        "schedule": "Tuesdays, 3:00 PM - 5:00 PM",
+        "max_participants": 15,
+        "participants": []
+    },
+    "Music Band": {
+        "description": "Learn to play instruments and perform in school events",
+        "schedule": "Mondays, 4:00 PM - 6:00 PM",
+        "max_participants": 20,
+        "participants": []
+    },
+    "Photography Club": {
+        "description": "Learn photography techniques and capture school events",
+        "schedule": "Thursdays, 3:00 PM - 5:00 PM",
+        "max_participants": 10,
+        "participants": []
     }
 }
 
@@ -54,6 +102,7 @@ def get_activities():
 
 @app.post("/activities/{activity_name}/signup")
 def signup_for_activity(activity_name: str, email: str):
+
     """Sign up a student for an activity"""
     # Validate activity exists
     if activity_name not in activities:
@@ -61,6 +110,9 @@ def signup_for_activity(activity_name: str, email: str):
 
     # Get the specific activity
     activity = activities[activity_name]
+    # Validate student is not already signed up
+    if email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Student already signed up")
 
     # Add student
     activity["participants"].append(email)
